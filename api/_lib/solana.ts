@@ -2,7 +2,7 @@ import { Connection, PublicKey, VersionedTransaction } from "@solana/web3.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { Raydium, LAUNCHPAD_PROGRAM, LaunchpadPool, LaunchpadConfig, PlatformConfig, getPdaPlatformId, getPdaPlatformVault } from "@raydium-io/raydium-sdk-v2";
 import { NATIVE_MINT } from "@solana/spl-token";
-import { PROOF_LAUNCH } from "../../shared/curve";
+import { PROOF_LAUNCH, TOKEN_CA } from "../../shared/curve";
 
 // RPC_URL may be the full Helius link, the link without https://, or just the API key. All three work.
 function resolveRpc(raw: string | undefined): string | null {
@@ -104,9 +104,9 @@ export function platformVaultFor(platformId: PublicKey) {
   return getPdaPlatformVault(LAUNCHPAD_PROGRAM, platformId, NATIVE_MINT).publicKey;
 }
 
-// The $CALLED token's contract address, if set (never the proof launch).
+// The $CALLED token's contract address: TOKEN_CA if set, else the one in shared/curve.ts (never the proof launch).
 export function tokenCa(): string {
-  const ca = (process.env.TOKEN_CA || "").trim();
+  const ca = (process.env.TOKEN_CA || TOKEN_CA || "").trim();
   return ca && ca !== PROOF_LAUNCH ? ca : "";
 }
 

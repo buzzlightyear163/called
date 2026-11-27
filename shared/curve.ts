@@ -96,3 +96,6 @@ export const MAX_DEV_BUY_SOL = Math.floor(costToBuy(CURVE, MAX_DEV_SHARE) * 10) 
 // The first coin launched through CALLED's own platform, kept on the site as proof that it works.
 // Empty until that launch exists.
 export const PROOF_LAUNCH = "";
+
+// $CALLED's own contract address. Shown on the site from day one; it gets a chart link once the coin is live.
+export const TOKEN_CA = "5vYoStvnerHR2bYAVqB4rKUefSXSyZz8GrfBx5NbkjPc";

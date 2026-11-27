@@ -17,7 +17,7 @@ import os
 EMPTY = os.environ.get("EMPTY") == "1"
 
 def config():
-    return {"ticker": "CALLED", "ca": None, "x": None, "platform": {"id": "P1atformXXXX", "own": True, "name": "CALLED", "feeRate": 0.01, "creatorFeeRate": 0},
+    return {"ticker": "CALLED", "ca": "5vYoStvnerHR2bYAVqB4rKUefSXSyZz8GrfBx5NbkjPc", "caLive": False, "x": None, "platform": {"id": "P1atformXXXX", "own": True, "name": "CALLED", "feeRate": 0.01, "creatorFeeRate": 0},
             "ownPlatformExpected": "P1atformXXXX", "platformAdmin": "AdminXXXX", "treasury": "AdminXXXX", "protocolFee": 0.0025, "solUsd": SOL}
 
 def coin(i, sym, name, mc, status="curve", fill=0.4, calls=0):

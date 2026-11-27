@@ -23,6 +23,7 @@ export type Platform = {
 export type SiteConfig = {
   ticker: string;
   ca: string | null;
+  caLive: boolean;
   x: string | null;
   platform: Platform | null;
   ownPlatformExpected: string | null;

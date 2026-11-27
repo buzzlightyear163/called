@@ -1,15 +1,13 @@
 import { PublicKey } from "@solana/web3.js";
 import { activePlatform, connection, handle, ownPlatformId, solUsd, tokenCa, treasuryWallet } from "./_lib/solana";
 
-// Only show the CA once the mint exists on chain, so the site never points buyers at an address that isn't live.
-async function liveCa(): Promise<string | null> {
-  const ca = tokenCa();
-  if (!ca) return null;
+// Whether the $CALLED mint exists on chain yet. The CA is shown either way; the chart link waits for this.
+async function caLive(ca: string): Promise<boolean> {
+  if (!ca) return false;
   try {
-    const acc = await connection().getAccountInfo(new PublicKey(ca));
-    return acc ? ca : null;
+    return !!(await connection().getAccountInfo(new PublicKey(ca)));
   } catch {
-    return null;
+    return false;
   }
 }
 
@@ -19,10 +17,12 @@ export default handle(async (_req, res) => {
   res.setHeader("Cache-Control", "s-maxage=20, stale-while-revalidate=60");
   if (cache && Date.now() - cache.at < 20_000) return cache.v;
   const own = ownPlatformId();
-  const [platform, sol, ca] = await Promise.all([activePlatform().catch(() => null), solUsd().catch(() => ({ usd: 0, change24h: null })), liveCa()]);
+  const ca = tokenCa() || null;
+  const [platform, sol, live] = await Promise.all([activePlatform().catch(() => null), solUsd().catch(() => ({ usd: 0, change24h: null })), caLive(ca || "")]);
   const v = {
     ticker: "CALLED",
     ca,
+    caLive: live,
     x: process.env.X_URL || null,
     platform,
     ownPlatformExpected: own?.toBase58() ?? null,

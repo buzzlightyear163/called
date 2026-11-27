@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Mark } from "./Mark";
 import { useSite } from "../lib/site";
 import { useCopy } from "../lib/hooks";
-import { short, usd, sol } from "../lib/format";
+import { usd, sol } from "../lib/format";
 import type { Coin } from "../lib/api";
 
 export function Avatar({ coin, size = 32 }: { coin: Pick<Coin, "image" | "symbol">; size?: number }) {
@@ -88,18 +88,35 @@ export function CoinPill() {
       <div className="coinpill-r">
         {ca ? (
           <>
-            <span className="mono">{short(ca, 4)}</span>
+            <span className="mono ca-full">{ca}</span>
             <button className="btn-mini" onClick={() => copy(ca)}>
               {copied === ca ? "Copied" : "Copy CA"}
             </button>
-            <Link className="btn-mini" to={`/c/${ca}`}>
-              Chart
-            </Link>
+            {config?.caLive && (
+              <Link className="btn-mini" to={`/c/${ca}`}>
+                Chart
+              </Link>
+            )}
           </>
         ) : (
           <span className="mono dim">CA posted on X</span>
         )}
       </div>
     </div>
+  );
+}
+
+// Compact CA row for the hero.
+export function CaChip() {
+  const { config } = useSite();
+  const { copied, copy } = useCopy();
+  const ca = config?.ca;
+  if (!ca) return null;
+  return (
+    <button className="ca-chip" onClick={() => copy(ca)} title="Copy contract address">
+      <span className="ca-k">$CALLED</span>
+      <span className="mono ca-v">{ca}</span>
+      <span className="ca-c">{copied === ca ? "Copied" : "Copy"}</span>
+    </button>
   );
 }

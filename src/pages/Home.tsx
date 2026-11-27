@@ -4,7 +4,7 @@ import { Receipt, exampleCall } from "../components/Receipt";
 import { useSite } from "../lib/site";
 import { useNow, usePoll } from "../lib/hooks";
 import { points as pts, ret, sol, usd, until } from "../lib/format";
-import { CoinPill, Pill } from "../components/Bits";
+import { CaChip, CoinPill, Pill } from "../components/Bits";
 import { ECON } from "../../shared/curve";
 import { CALLS, weekEnd } from "../../shared/calls";
 import type { Leaderboard } from "../lib/api";
@@ -136,7 +136,8 @@ function Hero({ data }: { data: Leaderboard | null }) {
               Start calling
             </Link>
           </div>
-          <p className="hero-note">
+          <CaChip />
+        <p className="hero-note">
             {Math.round(ECON.potShare * 100)}% of the {Math.round(ECON.platformFee * 100)}% platform fee goes to the pot. Callers only earn on coins launched
             here, because that is where the fees come from.
           </p>

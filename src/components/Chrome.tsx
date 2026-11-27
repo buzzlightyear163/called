@@ -46,7 +46,7 @@ export function Header() {
     window.addEventListener("scroll", on, { passive: true });
     return () => window.removeEventListener("scroll", on);
   }, []);
-  const coinHref = config?.ca ? `/c/${config.ca}` : "/#called-coin";
+  const coinHref = config?.ca && config.caLive ? `/c/${config.ca}` : "/#called-coin";
   const links = (
     <>
       <NavLink to={coinHref} className={() => "nav-a"}>
