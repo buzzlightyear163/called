@@ -21,7 +21,7 @@ A launchpad that pays callers on results, not volume.
 Plats: Every call gets a receipt
 Webbplats: [länk] (fylls i när launch-inlägget postas)
 
-## Launch-inlägg (~1 320 tecken, bild: grafik/launch.png)
+## Launch-inlägg (~1 320 tecken, bifoga grafik/launch-video.mp4)
 pump.fun has paid $29.6M to callers since August. The median payout was $13, and all of it was paid on volume. Nothing checked if you made money.
 
 $CALLED is live. A launchpad that pays callers on what their followers actually made.
