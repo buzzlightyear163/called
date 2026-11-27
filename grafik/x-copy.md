@@ -87,3 +87,31 @@ Following a caller used to mean one thing: they were right, and you made money w
 CALLED puts that back into the numbers. No pay for volume. No pay for dumping on the people who bought. A public receipt for every call, win or lose.
 
 Launch your coin here and every caller who calls it has to be right about it.
+
+## Utan Premium (max 280 tecken)
+
+### Launch A – problemet först (272)
+Since August, pump.fun paid callers $29.6M on volume. Median payout: $13.
+
+$CALLED is live. A launchpad that pays callers from a weekly pot by what their followers made 24h after the call. Sell into your own call and it prints zero.
+
+calledpot.fun
+
+### Launch B – produkten först (223)
+$CALLED is live.
+
+Callers get paid when you do. Every call is stamped at the price, scored 24h later on what real buyers made, and paid from a weekly pot. Sell into your own call and it prints zero.
+
+calledpot.fun
+
+### Launch C – kontrasten (272)
+On pump.fun, callers get paid for volume. On CALLED, they get paid for what you made.
+
+$CALLED is live. Every call gets a receipt: priced at the call, scored at +24h, paid from a weekly pot. Dump on your followers and it prints zero.
+
+calledpot.fun
+
+### Svar under (70)
+CA: 5vYoStvnerHR2bYAVqB4rKUefSXSyZz8GrfBx5NbkjPc
+
+This is the only CA.
