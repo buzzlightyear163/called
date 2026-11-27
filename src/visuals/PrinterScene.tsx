@@ -8,7 +8,8 @@ import { RC_W, drawReceipt, drawShape, loadReceiptFonts } from "./receiptCanvas"
 // The hero: a thermal printer on a desk prints the call as a receipt. The paper rises out of the slot,
 // curls over at the top and gets stamped with what the followers made.
 
-type Props = { front: Call; frontExample: boolean; solUsd: number; night: boolean; className?: string; onReady?: () => void };
+type View = { target: [number, number, number]; base: [number, number, number]; fov?: number };
+type Props = { front: Call; frontExample: boolean; solUsd: number; night: boolean; className?: string; onReady?: () => void; view?: View };
 
 const PAPER_W = 1.0;
 
@@ -51,7 +52,7 @@ function labelTexture() {
   return t;
 }
 
-export default function PrinterScene({ front, frontExample, solUsd, night, className, onReady }: Props) {
+export default function PrinterScene({ front, frontExample, solUsd, night, className, onReady, view }: Props) {
   const host = useRef<HTMLDivElement>(null);
   const [failed, setFailed] = useState(false);
 
@@ -83,9 +84,9 @@ export default function PrinterScene({ front, frontExample, solUsd, night, class
     scene.environment = env;
     scene.environmentIntensity = night ? 0.35 : 0.75;
 
-    const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 60);
-    const target = new THREE.Vector3(0.16, 0.98, 0.18);
-    const base = new THREE.Vector3(1.0, 1.66, 5.2);
+    const camera = new THREE.PerspectiveCamera(view?.fov ?? 28, 1, 0.1, 60);
+    const target = view ? new THREE.Vector3(...view.target) : new THREE.Vector3(0.16, 0.98, 0.18);
+    const base = view ? new THREE.Vector3(...view.base) : new THREE.Vector3(1.0, 1.66, 5.2);
 
     // Light: a warm key from the upper left, a soft fill, a cool rim from behind.
     scene.add(new THREE.HemisphereLight(0xffffff, night ? 0x2a2820 : 0xd9d3c3, night ? 0.25 : 0.9));
@@ -135,7 +136,8 @@ export default function PrinterScene({ front, frontExample, solUsd, night, class
     const bar = new THREE.Mesh(new RoundedBoxGeometry(PAPER_W + 0.2, 0.035, 0.05, 2, 0.012), new THREE.MeshStandardMaterial({ color: 0xa8a69c, metalness: 1, roughness: 0.3 }));
     bar.position.set(0, TOP + 0.02, SLOT_Z + 0.055);
     printer.add(bar);
-    const label = new THREE.Mesh(new THREE.PlaneGeometry(0.72, 0.18), new THREE.MeshStandardMaterial({ map: labelTexture(), transparent: true, roughness: 0.6 }));
+    const labelMat = new THREE.MeshStandardMaterial({ map: labelTexture(), transparent: true, roughness: 0.6 });
+    const label = new THREE.Mesh(new THREE.PlaneGeometry(0.72, 0.18), labelMat);
     label.position.set(-0.22, 0.28, BD / 2 + 0.031);
     printer.add(label);
     const led = new THREE.Mesh(new THREE.SphereGeometry(0.032, 20, 14), new THREE.MeshBasicMaterial({ color: 0xd4ff3a }));
@@ -221,7 +223,7 @@ export default function PrinterScene({ front, frontExample, solUsd, night, class
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
       // Pull back on narrow screens so the whole printer stays in frame.
-      const fit = w / h < 0.62 ? 1.12 : 1;
+      const fit = !view && w / h < 0.62 ? 1.12 : 1;
       camBase.copy(base).sub(target).multiplyScalar(fit).add(target);
       camera.position.copy(camBase);
       camera.updateProjectionMatrix();
@@ -278,6 +280,9 @@ export default function PrinterScene({ front, frontExample, solUsd, night, class
     }
     loadReceiptFonts().then(() => {
       if (disposed) return;
+      labelMat.map?.dispose();
+      labelMat.map = labelTexture();
+      labelMat.needsUpdate = true;
       frontCanvas = receiptCanvas(front, frontExample, solUsd, 0);
       tex.image = frontCanvas;
       tex.needsUpdate = true;
@@ -304,7 +309,7 @@ export default function PrinterScene({ front, frontExample, solUsd, night, class
       renderer.dispose();
       renderer.domElement.remove();
     };
-  }, [front, frontExample, solUsd, night, onReady]);
+  }, [front, frontExample, solUsd, night, onReady, view]);
 
   if (failed) return null;
   return <div ref={host} className={className} />;
